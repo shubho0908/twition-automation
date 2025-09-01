@@ -7,6 +7,14 @@ export interface NotionTask {
   date: string;
 }
 
+export interface NotionPageAnalysis {
+  status: 'done' | 'not-done';
+  completedTasks: NotionTask[];
+  incompleteTasks: NotionTask[];
+  shouldGenerateTweet: boolean;
+  reason: string;
+}
+
 // Rich text type for Notion API
 export interface NotionRichText {
   plain_text: string;

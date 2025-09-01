@@ -17,7 +17,7 @@ export const createTwitterPost = async (tasks: NotionTask[]): Promise<TwitterCon
     const contentLength = combinedContent.length;
     logger.info(`Combined content length: ${contentLength} characters`);
 
-    if (contentLength <= 280) {
+    if (contentLength <= 265) {
       return await createSingleTweet(combinedContent);
     } else if (contentLength <= 430) {
       return await createSummarizedTweet(combinedContent);
@@ -38,7 +38,7 @@ const createSingleTweet = async (content: string): Promise<TwitterContent> => {
     const response = await result.response;
     const tweetText = response.text().trim();
 
-    if (tweetText.length > 280) {
+    if (tweetText.length > 265) {
       logger.warn(`Generated single tweet is ${tweetText.length} chars, creating thread instead`);
       return await createTwitterThread(content);
     }
@@ -59,25 +59,29 @@ const createSingleTweet = async (content: string): Promise<TwitterContent> => {
 const createSummarizedTweet = async (content: string): Promise<TwitterContent> => {
   try {
     const prompt = `
-Summarize the following tasks into a single Twitter post that is EXACTLY 280 characters or less.
+You're Shubhojeet sharing your dev day. Summarize what you built/learned into one casual tweet.
 
-Content to summarize:
+What happened today:
 ${content}
 
-Requirements:
-- MAXIMUM 280 characters (this is critical - count every character)
-- Include relevant emojis to save space
-- Focus only on the most important achievements
-- Be concise but engaging
-- Professional but personable tone
+Write like you're genuinely excited to share with fellow builders:
+- MAXIMUM 265 characters (count carefully!)
+- Personal tone ("I spent the day", "Finally cracked", "Been experimenting with")
+- Show the learning journey ("learned that...", "discovered...", "turns out...")
+- Include some personality ("this was fun", "pretty neat", "way cooler than expected")
+- Mention specific tech but keep it conversational
+- Share both wins AND small struggles
+- Sound like a human, not a press release
+- Hashtags are optional - only add them if they genuinely add value (max 2 if used)
+- Most of the time, skip hashtags - let the content speak for itself
 
-Return only the tweet text, no extra formatting:`;
+Just the tweet text:`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const tweetText = response.text().trim();
 
-    if (tweetText.length > 280) {
+    if (tweetText.length > 265) {
       logger.warn(`Generated tweet is ${tweetText.length} chars, creating thread instead`);
       return await createTwitterThread(content);
     }
@@ -119,47 +123,58 @@ const createTwitterThread = async (content: string): Promise<TwitterContent> => 
 
 const createTwitterPrompt = (content: string): string => {
   return `
-Create a Twitter post from these completed tasks. Must be 280 characters or less.
+You're Shubhojeet, a curious developer who loves building and learning. Write a casual tweet about what you got done today. Keep it real and personal.
 
-Tasks:
+What you worked on:
 ${content}
 
-Requirements:
-- MAXIMUM 280 characters
-- Include relevant emojis
-- Professional but approachable tone
-- Engaging for followers
+Write like you're texting a friend who codes:
+- MAXIMUM 265 characters
+- Use "I" - make it personal ("I finally got", "Just shipped", "Been diving into")
+- Show your curiosity ("found out that...", "turns out...", "discovered")
+- Be excited about the tech ("this is actually pretty cool", "loving how...")
+- Include small struggles/wins ("took me forever but...", "way easier than I thought")
+- Use casual language, not corporate speak
+- Throw in some genuine enthusiasm
+- Hashtags are optional - only add if really needed for context (max 2 if you do)
+- Don't force hashtags - the content should be clear without them
 
 Tweet:`;
 };
 
 const createThreadPrompt = (content: string): string => {
   return `
-Create a comprehensive Twitter thread from today's accomplished tasks. Break down complex topics into multiple tweets that can be as long as needed.
+You're Shubhojeet sharing your coding journey with the dev community. Write a thread about what you built/learned today. Keep it real and conversational.
 
-Tasks completed today:
+What you worked on:
 ${content}
 
-Requirements:
-- Each tweet MAXIMUM 280 characters
-- First tweet: Engaging summary of main achievements
-- Continue with as many tweets as needed to cover all details
-- Number each tweet (1/n, 2/n, etc.) - n can be any number needed
-- Include relevant emojis
-- Professional but approachable tone
-- Natural flow between tweets
-- Don't rush - take space to explain properly
-- Group related topics together in consecutive tweets
+Write like you're genuinely excited to share your progress with fellow builders:
 
-Format your response as:
-Tweet 1: [engaging summary]
-Tweet 2: [first detailed topic]
-Tweet 3: [continuation or next topic]
-Tweet 4: [more details]
-...
-Tweet N: [conclusion/final thoughts]
+- MAXIMUM 5 tweets but prefer fewer if content fits well (2-4 tweets is often better)
+- Each tweet max 265 characters
+- Tweet 1: Set the scene naturally ("Been working on...", "So I decided to rebuild...", "Spent the day diving into...")
+- Middle tweets: Share the interesting bits with ">" bullets, but make it feel like you're explaining to a friend
+- Final tweet: What you actually learned/discovered ("Honestly learned so much", "This whole thing taught me...")
 
-Create as many tweets as needed to fully cover the content. Thread:`;
+Sound human:
+- Use "I" constantly - make it personal
+- Show curiosity ("wanted to figure out...", "was curious about...")
+- Include small struggles ("took me way longer than expected", "finally got it working")
+- Be excited about discoveries ("turns out...", "discovered that...", "this is actually pretty cool")
+- Use casual language ("pretty neat", "way better", "honestly")
+- Show ambition ("next I want to...", "planning to...")
+- Hashtags are completely optional - only use if they genuinely help (max 2 for entire thread)
+- Most threads don't need hashtags - focus on authentic storytelling instead
+
+Format as 2-5 tweets (use only what's needed):
+Tweet 1: [natural story opener]
+Tweet 2: [cool technical stuff with > bullets]
+Tweet 3: [more implementations with > bullets - only if needed]
+Tweet 4: [additional discoveries with > bullets - only if needed]  
+Tweet 5: [genuine reflection on what you learned - only if you have 4+ tweets]
+
+Thread:`;
 };
 
 const parseThreadResponse = (threadText: string): string[] => {
@@ -172,9 +187,9 @@ const parseThreadResponse = (threadText: string): string[] => {
       if (tweetMatch) {
         const tweetContent = tweetMatch[1].trim();
         if (tweetContent) {
-          if (tweetContent.length > 280) {
+          if (tweetContent.length > 265) {
             logger.warn(`Tweet ${tweets.length + 1} is ${tweetContent.length} chars, will be truncated`);
-            tweets.push(tweetContent.substring(0, 280));
+            tweets.push(tweetContent.substring(0, 265));
           } else {
             tweets.push(tweetContent);
           }
@@ -187,7 +202,7 @@ const parseThreadResponse = (threadText: string): string[] => {
         .split(/\d+\/\d+/)
         .map(tweet => tweet.trim())
         .filter(tweet => tweet.length > 0)
-        .map(tweet => tweet.length > 280 ? tweet.substring(0, 280) : tweet);
+        .map(tweet => tweet.length > 265 ? tweet.substring(0, 265) : tweet);
       
       tweets.push(...fallbackTweets);
     }
@@ -198,12 +213,12 @@ const parseThreadResponse = (threadText: string): string[] => {
       let currentChunk = '';
       
       for (const word of words) {
-        if ((currentChunk + ' ' + word).length > 280) {
+        if ((currentChunk + ' ' + word).length > 265) {
           if (currentChunk) {
             chunks.push(currentChunk.trim());
             currentChunk = word;
           } else {
-            chunks.push(word.substring(0, 280));
+            chunks.push(word.substring(0, 265));
           }
         } else {
           currentChunk += (currentChunk ? ' ' : '') + word;
@@ -217,10 +232,13 @@ const parseThreadResponse = (threadText: string): string[] => {
       tweets.push(...chunks);
     }
 
-    const numberedTweets = tweets.map((tweet, index) => {
-      const tweetNumber = `${index + 1}/${tweets.length}`;
+    // Limit to maximum 5 tweets
+    const limitedTweets = tweets.slice(0, 5);
+    
+    const numberedTweets = limitedTweets.map((tweet, index) => {
+      const tweetNumber = `${index + 1}/${limitedTweets.length}`;
       if (!tweet.includes(`${index + 1}/`)) {
-        const availableSpace = 280 - tweetNumber.length - 1;
+        const availableSpace = 265 - tweetNumber.length - 1;
         const tweetContent = tweet.length > availableSpace ? tweet.substring(0, availableSpace) : tweet;
         return `${tweetNumber} ${tweetContent}`;
       }
@@ -231,6 +249,6 @@ const parseThreadResponse = (threadText: string): string[] => {
 
   } catch (error) {
     logger.error('Error parsing thread response', { error });
-    return [threadText.substring(0, 280)];
+    return [threadText.substring(0, 265)];
   }
 };

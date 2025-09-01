@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getTodaysCompletedTasks } from '@/lib/services/notionService';
+import { analyzeNotionPage } from '@/lib/services/notionService';
 import { createTwitterPost } from '@/lib/services/geminiService';
 import { postTwitterContent } from '@/lib/services/twitterService';
-import { sendSuccessNotification, sendErrorNotification } from '@/lib/services/emailService';
+import { sendSuccessNotification } from '@/lib/services/emailService';
 import { analyzeContent, validateTwitterContent } from '@/lib/utils/contentProcessor';
 import { getCurrentTime } from '@/lib/services/schedulerService';
 import { validateEnvironmentVariables } from '@/lib/utils/validation';
 import logger from '@/lib/utils/logger';
 import { handleError } from '@/lib/utils/errorHandler';
-import type { NotionTask } from '@/lib/types';
+import type { NotionPageAnalysis } from '@/lib/types';
 
 function extractPageIdFromHeaders(request: Request): string | null {
   const referrer = request.headers.get('referer') || request.headers.get('referrer');
@@ -80,22 +80,35 @@ export async function POST(request: Request) {
       throw new Error('No Notion page ID provided. Please provide pageId as a query parameter, in the request body, or ensure the request comes from a Notion context with proper headers.');
     }
     
-    logger.info('📚 Fetching completed tasks from Notion', { pageId });
+    logger.info('📚 Analyzing Notion page for tasks and status', { pageId });
     
-    const tasks: NotionTask[] = await getTodaysCompletedTasks(pageId);
+    const pageAnalysis: NotionPageAnalysis = await analyzeNotionPage(pageId);
     
-    if (tasks.length === 0) {
-      logger.info('✅ Workflow completed - No tasks to share today');
+    if (!pageAnalysis.shouldGenerateTweet) {
+      logger.info('✅ Workflow completed - Tweet generation skipped', { 
+        reason: pageAnalysis.reason,
+        status: pageAnalysis.status,
+        completedTasks: pageAnalysis.completedTasks.length,
+        incompleteTasks: pageAnalysis.incompleteTasks.length
+      });
       return NextResponse.json({
         success: true,
-        message: 'No completed tasks found for today',
+        message: `Tweet generation skipped: ${pageAnalysis.reason}`,
         action: 'skipped',
-        tasks: [],
+        data: {
+          analysis: {
+            status: pageAnalysis.status,
+            completedTasks: pageAnalysis.completedTasks.length,
+            incompleteTasks: pageAnalysis.incompleteTasks.length,
+            reason: pageAnalysis.reason
+          }
+        },
         timestamp: getCurrentTime()
       });
     }
 
-    logger.info(`📋 Found ${tasks.length} completed task(s) to process`);
+    const tasks = pageAnalysis.completedTasks;
+    logger.info(`📋 Proceeding with ${tasks.length} completed task(s) - ${pageAnalysis.reason}`);
 
     currentStage = 'content-analysis';
     logger.info('🔍 Analyzing content structure and complexity');
@@ -155,6 +168,12 @@ export async function POST(request: Request) {
       success: true,
       message: `Successfully posted ${postResult.tweetIds.length} tweet(s) from ${tasks.length} completed task(s)`,
       data: {
+        analysis: {
+          status: pageAnalysis.status,
+          reason: pageAnalysis.reason,
+          completedTasks: pageAnalysis.completedTasks.length,
+          incompleteTasks: pageAnalysis.incompleteTasks.length
+        },
         tasks: {
           count: tasks.length,
           titles: tasks.map(task => task.title)
@@ -191,18 +210,7 @@ export async function POST(request: Request) {
       endTime
     });
 
-    // Send error notification
-    try {
-      await sendErrorNotification(
-        errorMessage,
-        error instanceof Error ? error.stack || '' : '',
-        `automation-workflow/${currentStage}`
-      );
-    } catch (notificationError) {
-      logger.error('Failed to send error notification', { notificationError });
-    }
-
-    // Handle error with central error handler
+    // Handle error with central error handler (includes email notification)
     await handleError(error as Error, `automation-workflow/${currentStage}`);
 
     return NextResponse.json({

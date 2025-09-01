@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     const statusChecks = await Promise.allSettled([
       verifyTwitterConnection(),
       testEmailConnection(),
-      getTodaysCompletedTasks().then(() => true).catch(() => false)
+      getTodaysCompletedTasks('test-page-id').then(() => true).catch(() => false)
     ]);
 
     const twitterStatus = statusChecks[0].status === 'fulfilled' ? statusChecks[0].value : false;
