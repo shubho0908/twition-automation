@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Twitter Automation API - Documentation",
+  title: "Twition - Documentation",
   description: "Simple one-endpoint API for automating Twitter posts from Notion tasks using AI",
 };
 

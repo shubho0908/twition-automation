@@ -3,12 +3,14 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Separator } from "@/components/ui/separator"
 import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Twitter Automation API - Documentation",
-  description: "Simple one-endpoint API for automating Twitter posts from Notion tasks using AI. Integrates Notion, Google Gemini AI, and Twitter APIs for seamless content creation.",
+  title: "Twition - Documentation",
+  description: "Twition - Simple one-endpoint API for automating Twitter posts from Notion tasks using AI. Integrates Notion, Google Gemini AI, and Twitter APIs for seamless content creation.",
   keywords: [
+    "Twition",
     "Twitter API", 
     "Notion integration", 
     "AI automation", 
@@ -19,25 +21,25 @@ export const metadata: Metadata = {
     "REST API",
     "Next.js API"
   ],
-  authors: [{ name: "Twitter Automation API" }],
-  creator: "Twitter Automation API",
-  publisher: "Twitter Automation API",
+  authors: [{ name: "Twition" }],
+  creator: "Twition",
+  publisher: "Twition",
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Twitter Automation API - Documentation",
+    title: "Twition - Documentation",
     description: "Simple one-endpoint API for automating Twitter posts from Notion tasks using AI",
     type: "website",
     locale: "en_US",
-    siteName: "Twitter Automation API",
+    siteName: "Twition",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Twitter Automation API - Documentation",
+    title: "Twition - Documentation",
     description: "Simple one-endpoint API for automating Twitter posts from Notion tasks using AI",
-    creator: "@twitter_automation_api",
+    creator: "@twition_api",
   },
   viewport: {
     width: "device-width",
@@ -67,7 +69,7 @@ export default function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Twitter Automation API',
+    name: 'Twition',
     description: 'Simple one-endpoint API for automating Twitter posts from Notion tasks using AI',
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Web',
@@ -78,7 +80,7 @@ export default function Home() {
     },
     creator: {
       '@type': 'Organization',
-      name: 'Twitter Automation API'
+      name: 'Twition'
     },
     featureList: [
       'Notion Integration',
@@ -95,14 +97,14 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+      <Card className="min-h-screen rounded-none border-none">
+        <Card className="rounded-none border-b">
+          <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6">
             <div className="flex items-center gap-4">
               <div>
-                <h1 className="text-2xl font-bold">Twitter Automation API</h1>
+                <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Twition</h1>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Simple, elegant automation</p>
               </div>
               <Badge variant="secondary">v1.0.0</Badge>
             </div>
@@ -113,82 +115,85 @@ export default function Home() {
               </code>
               <ModeToggle />
             </div>
-          </div>
-        </div>
-      </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">API Reference</CardTitle>
+                <CardTitle className="text-lg font-medium">Quick Navigation</CardTitle>
               </CardHeader>
               <CardContent>
-                <nav className="space-y-2">
-                  <a href="#overview" className="block text-sm text-primary hover:text-primary/80 font-medium">
-                    Overview
-                  </a>
-                  <a href="#authentication" className="block text-sm text-muted-foreground hover:text-foreground">
-                    Authentication
-                  </a>
-                  <a href="#endpoints" className="block text-sm text-muted-foreground hover:text-foreground">
-                    Endpoints
-                  </a>
-                  <div className="ml-4 space-y-1">
-                    <a href="#post-automate" className="block text-xs text-muted-foreground hover:text-foreground">
-                      POST /api/automate
-                    </a>
-                    <a href="#get-automate" className="block text-xs text-muted-foreground hover:text-foreground">
-                      GET /api/automate
-                    </a>
-                    <a href="#get-status" className="block text-xs text-muted-foreground hover:text-foreground">
-                      GET /api/status
-                    </a>
-                  </div>
-                  <a href="#examples" className="block text-sm text-muted-foreground hover:text-foreground">
-                    Examples
-                  </a>
-                  <a href="#errors" className="block text-sm text-muted-foreground hover:text-foreground">
-                    Error Codes
-                  </a>
+                <nav className="space-y-3">
+                  <Link href="#overview" className="block text-sm text-primary hover:text-primary/80 font-medium">
+                    What does this do?
+                  </Link>
+                  <Link href="#authentication" className="block text-sm text-muted-foreground hover:text-foreground font-medium">
+                    Setup
+                  </Link>
+                  <Link href="#endpoints" className="block text-sm text-muted-foreground hover:text-foreground font-medium">
+                    API Endpoints
+                  </Link>
+                  <Link href="#examples" className="block text-sm text-muted-foreground hover:text-foreground font-medium">
+                    Ways to use it
+                  </Link>
+                  <Link href="#errors" className="block text-sm text-muted-foreground hover:text-foreground font-medium">
+                    When things go wrong
+                  </Link>
                 </nav>
               </CardContent>
             </Card>
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
             {/* Overview Section */}
             <Card id="overview">
               <CardHeader>
-                <CardTitle className="text-2xl">Overview</CardTitle>
-                <CardDescription>
-                  The Twitter Automation API provides a modern, comprehensive solution for automating Twitter posts from your Notion tasks. 
-                  Built with Next.js 15, React 19, and enhanced error handling, it integrates seamlessly with Notion, Google Gemini AI, and Twitter APIs to create and publish engaging content automatically.
+                <CardTitle className="text-2xl font-bold">What does this do?</CardTitle>
+                <CardDescription className="text-base leading-relaxed">
+                  Transform your Notion tasks into Twitter posts automatically. 
+                  One button click reads your completed tasks, creates engaging content with AI, and posts to Twitter.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Card className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
-                    <CardContent className="pt-4">
-                      <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">🚀 One-Click Automation</h4>
-                      <p className="text-sm text-blue-700 dark:text-blue-300">
-                        Send a single POST request to fetch Notion tasks, generate AI content, and post to Twitter automatically.
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
-                    <CardContent className="pt-4">
-                      <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">✨ Enhanced Error Handling</h4>
-                      <p className="text-sm text-green-700 dark:text-green-300">
-                        Comprehensive error tracking, notifications, and recovery with stage-based monitoring.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+                <Card className="bg-muted">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">How it works</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between space-x-6">
+                      <Card className="text-center p-4">
+                        <CardContent className="p-0">
+                          <Badge variant="outline" className="w-12 h-12 rounded-full mb-2 bg-blue-100 dark:bg-blue-900 border-blue-300">
+                            <span className="text-blue-600 dark:text-blue-400 font-medium">1</span>
+                          </Badge>
+                          <p className="text-sm">Read Notion</p>
+                        </CardContent>
+                      </Card>
+                      <Separator className="flex-1" />
+                      <Card className="text-center p-4">
+                        <CardContent className="p-0">
+                          <Badge variant="outline" className="w-12 h-12 rounded-full mb-2 bg-green-100 dark:bg-green-900 border-green-300">
+                            <span className="text-green-600 dark:text-green-400 font-medium">2</span>
+                          </Badge>
+                          <p className="text-sm">Generate Content</p>
+                        </CardContent>
+                      </Card>
+                      <Separator className="flex-1" />
+                      <Card className="text-center p-4">
+                        <CardContent className="p-0">
+                          <Badge variant="outline" className="w-12 h-12 rounded-full mb-2 bg-purple-100 dark:bg-purple-900 border-purple-300">
+                            <span className="text-purple-600 dark:text-purple-400 font-medium">3</span>
+                          </Badge>
+                          <p className="text-sm">Post to Twitter</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CardContent>
+                </Card>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="text-center">
@@ -219,42 +224,60 @@ export default function Home() {
             {/* Authentication Section */}
             <Card id="authentication">
               <CardHeader>
-                <CardTitle className="text-2xl">Authentication & Configuration</CardTitle>
+                <CardTitle className="text-2xl font-bold">Setup</CardTitle>
                 <CardDescription>
-                  This API uses environment-based authentication with comprehensive validation. No API keys are required in requests.
+                  Configure your API keys once. No authentication needed in requests.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-950 dark:border-yellow-800">
-                  <CardContent className="pt-4">
-                    <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">📋 Required Environment Variables</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-yellow-700 dark:text-yellow-300">
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">NOTION_API_KEY</code> - Notion integration key</div>
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">NOTION_PAGE_ID</code> - Default page/database ID</div>
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">TWITTER_API_KEY</code> - Twitter API credentials</div>
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">TWITTER_ACCESS_TOKEN</code> - Twitter access token</div>
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">GEMINI_API_KEY</code> - Google Gemini AI key</div>
-                      <div>• <code className="bg-yellow-100 dark:bg-yellow-800 px-1 rounded">EMAIL_USER</code> - Email service credentials</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
-                  <CardContent className="pt-4">
-                    <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">✓ Environment Validation</h4>
-                    <p className="text-sm text-green-700 dark:text-green-300">
+                <div className="space-y-3">
+                  <CardTitle className="font-medium text-lg">You need these API keys:</CardTitle>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="font-medium text-base">Notion API Key</CardTitle>
+                        <CardDescription className="font-medium">Get from developers.notion.com</CardDescription>
+                      </CardHeader>
+                    </Card>
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="font-medium text-base">Twitter API Keys</CardTitle>
+                        <CardDescription className="font-medium">Get from developer.twitter.com</CardDescription>
+                      </CardHeader>
+                    </Card>
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="font-medium text-base">Gemini AI Key</CardTitle>
+                        <CardDescription className="font-medium">Get from ai.google.dev</CardDescription>
+                      </CardHeader>
+                    </Card>
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="font-medium text-base">Email Settings</CardTitle>
+                        <CardDescription className="font-medium">For notifications</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  </div>
+                </div>
+                <Card className="border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium text-green-800 dark:text-green-200">✓ Environment Validation</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <CardDescription className="font-medium text-green-700 dark:text-green-300">
                       The API automatically validates all required environment variables on startup and provides detailed error messages for missing configurations.
-                    </p>
+                    </CardDescription>
                   </CardContent>
                 </Card>
               </CardContent>
             </Card>
 
-            {/* Endpoints Section */}
-            <div id="endpoints" className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">API Endpoints</h2>
-                <Separator />
-              </div>
+            <Card id="endpoints">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold">API Endpoints</CardTitle>
+                <CardDescription>Just two simple endpoints</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
 
               {/* POST /api/automate */}
               <Card id="post-automate">
@@ -263,15 +286,15 @@ export default function Home() {
                     <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
                       POST
                     </Badge>
-                    <CardTitle className="text-lg">/api/automate</CardTitle>
+                    <CardTitle className="text-lg font-medium">/api/automate</CardTitle>
                   </div>
-                  <CardDescription>
-                    Triggers the complete automation workflow: fetches Notion tasks, generates AI content, and posts to Twitter.
+                  <CardDescription className="font-medium">
+                    This does everything: reads your Notion tasks, creates Twitter content with AI, and posts it.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-medium mb-2">Request Options</h4>
+                    <h4 className="text-sm font-medium mb-2">How to use it</h4>
                     <Card className="bg-slate-900 border-slate-700">
                       <CardContent className="pt-4 space-y-2">
                         <div className="font-mono text-sm text-green-400"># Basic automation</div>
@@ -363,10 +386,10 @@ export default function Home() {
                     <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
                       GET
                     </Badge>
-                    <CardTitle className="text-lg">/api/automate</CardTitle>
+                    <CardTitle className="text-lg font-medium">/api/automate</CardTitle>
                   </div>
-                  <CardDescription>
-                    Quick health check endpoint to verify the API is running and accessible.
+                  <CardDescription className="font-medium">
+                    Check if the API is working.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -408,10 +431,10 @@ export default function Home() {
                     <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
                       GET
                     </Badge>
-                    <CardTitle className="text-lg">/api/status</CardTitle>
+                    <CardTitle className="text-lg font-medium">/api/status</CardTitle>
                   </div>
-                  <CardDescription>
-                    Comprehensive system status check including all service connections and health metrics.
+                  <CardDescription className="font-medium">
+                    See detailed system health and connection status.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -475,23 +498,26 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Examples Section */}
             <Card id="examples">
               <CardHeader>
-                <CardTitle className="text-2xl">Integration Examples</CardTitle>
+                <CardTitle className="text-2xl font-bold">Ways to use it</CardTitle>
+                <CardDescription>Pick what works best for you</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">🔘 Notion Button</h3>
+                  <h3 className="text-lg font-semibold mb-3">🔘 Notion Button (Easiest)</h3>
                   <Card className="bg-muted">
                     <CardContent className="pt-4">
-                      <p className="text-sm text-muted-foreground mb-2">Create a button in your Notion page:</p>
-                      <ul className="text-sm space-y-1 list-disc list-inside">
-                        <li>Type <code className="bg-background px-1 rounded">{`/button`}</code> in Notion</li>
-                        <li>URL: <code className="bg-background px-1 rounded">{baseUrl}/api/automate</code></li>
-                        <li>Method: <code className="bg-background px-1 rounded">POST</code></li>
+                      <p className="text-sm text-muted-foreground mb-2">Add a button to your Notion page:</p>
+                      <ul className="text-sm space-y-1">
+                        <li>1. Type <code className="bg-background px-1 rounded">/button</code> in Notion</li>
+                        <li>2. Set URL to: <code className="bg-background px-1 rounded text-xs">{baseUrl}/api/automate</code></li>
+                        <li>3. Set Method to: <code className="bg-background px-1 rounded">POST</code></li>
+                        <li>4. Click the button to post your completed tasks!</li>
                       </ul>
                     </CardContent>
                   </Card>
@@ -512,7 +538,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">🔗 cURL Command</h3>
+                  <h3 className="text-lg font-semibold mb-3">🔗 Command Line</h3>
                   <Card className="bg-slate-900 border-slate-700">
                     <CardContent className="pt-4">
                       <pre className="text-green-400 text-sm font-mono">curl -X POST {baseUrl}/api/automate</pre>
@@ -525,7 +551,8 @@ export default function Home() {
             {/* Error Codes Section */}
             <Card id="errors">
               <CardHeader>
-                <CardTitle className="text-2xl">Error Codes</CardTitle>
+                <CardTitle className="text-2xl font-bold">When things go wrong</CardTitle>
+                <CardDescription>Common error messages and what they mean</CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -578,8 +605,8 @@ export default function Home() {
             </Card>
           </div>
         </div>
-      </div>
-    </div>
+        </CardContent>
+      </Card>
     </>
   );
 }
