@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Separator } from "@/components/ui/separator"
-import { ModeToggle } from "@/components/mode-toggle"
+import { Header } from "@/components/header"
 import { CodeBlock } from "@/components/ui/code-block"
 import Link from "next/link"
 
@@ -50,30 +50,7 @@ export default function DocsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Card className="min-h-screen rounded-none border-none">
-        <Card className="rounded-none border-b">
-          <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center py-4 sm:py-6 gap-4">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <div>
-                <Link href="/">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer transition-colors">Twition</h1>
-                </Link>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">Simple, elegant automation</p>
-              </div>
-              <Badge variant="secondary" className="text-xs">v1.0.0</Badge>
-            </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full lg:w-auto">
-              <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm text-muted-foreground">Base URL:</span>
-                <code className="bg-muted px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-mono break-all">
-                  {baseUrl}
-                </code>
-              </div>
-              <ModeToggle />
-            </div>
-            </div>
-          </CardContent>
-        </Card>
+        <Header showBackLink={true} showBaseUrl={true} baseUrl={baseUrl} />
 
         <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -84,19 +61,19 @@ export default function DocsPage() {
               </CardHeader>
               <CardContent className="px-4 sm:px-6">
                 <nav className="space-y-2 sm:space-y-3">
-                  <Link href="#overview" className="block text-xs sm:text-sm text-primary hover:text-primary/80 font-medium">
+                  <Link href="#overview" className="block text-xs sm:text-sm text-primary hover:text-primary/80 font-medium cursor-pointer">
                     What does this do?
                   </Link>
-                  <Link href="#authentication" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium">
+                  <Link href="#authentication" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium cursor-pointer">
                     Setup
                   </Link>
-                  <Link href="#endpoints" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium">
+                  <Link href="#endpoints" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium cursor-pointer">
                     API Endpoints
                   </Link>
-                  <Link href="#examples" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium">
+                  <Link href="#examples" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium cursor-pointer">
                     Ways to use it
                   </Link>
-                  <Link href="#errors" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium">
+                  <Link href="#errors" className="block text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium cursor-pointer">
                     When things go wrong
                   </Link>
                 </nav>

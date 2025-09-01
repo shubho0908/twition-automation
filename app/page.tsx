@@ -4,15 +4,17 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { ModeToggle } from "@/components/mode-toggle"
-import Link from "next/link"
+import { Header } from "@/components/header"
 import { toast } from "sonner"
 
 export default function Home() {
   const [pageId, setPageId] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [response, setResponse] = useState<any>(null)
+  const [response, setResponse] = useState<{
+    success: boolean;
+    message: string;
+    error?: string;
+  } | null>(null)
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -62,25 +64,7 @@ export default function Home() {
 
   return (
     <Card className="min-h-screen rounded-none border-none">
-      <Card className="rounded-none border-b">
-        <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 gap-4">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100">Twition</h1>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">Simple, elegant automation</p>
-              </div>
-              <Badge variant="secondary" className="text-xs">v1.0.0</Badge>
-            </div>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Link href="/docs" className="text-xs sm:text-sm text-muted-foreground hover:text-foreground">
-                Documentation
-              </Link>
-              <ModeToggle />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <Header />
 
       <CardContent className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto space-y-6 sm:space-y-8">
@@ -110,7 +94,7 @@ export default function Home() {
               <Button 
                 onClick={handleTrigger} 
                 disabled={isLoading || !pageId.trim()}
-                className="w-full text-sm sm:text-base"
+                className="w-full text-sm sm:text-base cursor-pointer"
                 size="lg"
               >
                 {isLoading ? "Processing..." : "Trigger Automation"}

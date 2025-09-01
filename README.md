@@ -1,4 +1,4 @@
-# Twition - Twitter Automation API
+# Twitter Automation API (Twition)
 
 A modern Next.js-based API service that automates Twitter posting by analyzing Notion pages for completed tasks, processing them with Google's Gemini AI, and posting to Twitter on-demand. Features a sleek web dashboard, intelligent content analysis, and robust error handling.
 
@@ -49,7 +49,6 @@ Before setting up the service, ensure you have:
    ```env
    # Notion Configuration
    NOTION_API_KEY=your_notion_api_key_here
-   NOTION_PAGE_ID=your_notion_database_id_here
 
    # Twitter API Configuration  
    TWITTER_API_KEY=your_twitter_api_key_here
@@ -65,7 +64,7 @@ Before setting up the service, ensure you have:
    EMAIL_SERVICE=gmail
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASSWORD=your_app_password_here
-   ERROR_NOTIFICATION_EMAIL=shubhobera98@gmail.com
+   ERROR_NOTIFICATION_EMAIL=shubhobera98@gmail.com (change with yours primary email)
 
    # Application Configuration
    TIMEZONE=Asia/Kolkata
