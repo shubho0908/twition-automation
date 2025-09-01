@@ -124,7 +124,7 @@ export const sendSuccessNotification = async (
       : `Thread with ${(content.content as string[]).length} tweets`;
 
     const tweetLinks = postResult.tweetIds.map(id => 
-      `https://twitter.com/i/web/status/${id}`
+      `https://x.com/i/web/status/${id}`
     ).join('\n');
 
     const htmlContent = `

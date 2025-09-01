@@ -4,7 +4,7 @@ import { handleError } from '../utils/errorHandler';
 import type { NotionTask, TwitterContent } from '../types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
 export const createTwitterPost = async (tasks: NotionTask[]): Promise<TwitterContent> => {
   try {
@@ -74,6 +74,9 @@ Write like you're genuinely excited to share with fellow builders:
 - Sound like a human, not a press release
 - Hashtags are optional - only add them if they genuinely add value (max 2 if used)
 - Most of the time, skip hashtags - let the content speak for itself
+- NO jokes, sarcasm, or humor
+- Be direct and factual
+- Only include information from the provided content
 
 Just the tweet text:`;
 
@@ -138,6 +141,9 @@ Write like you're texting a friend who codes:
 - Throw in some genuine enthusiasm
 - Hashtags are optional - only add if really needed for context (max 2 if you do)
 - Don't force hashtags - the content should be clear without them
+- NO jokes, sarcasm, or humor
+- Be direct and factual
+- Only include information from the provided content
 
 Tweet:`;
 };
@@ -166,6 +172,9 @@ Sound human:
 - Show ambition ("next I want to...", "planning to...")
 - Hashtags are completely optional - only use if they genuinely help (max 2 for entire thread)
 - Most threads don't need hashtags - focus on authentic storytelling instead
+- NO jokes, sarcasm, or humor
+- Be direct and factual
+- Only include information from the provided content
 
 Format as 2-5 tweets (use only what's needed):
 Tweet 1: [natural story opener]
