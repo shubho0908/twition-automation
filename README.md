@@ -1,4 +1,4 @@
-# Twitter Automation API
+# Twitter Automation API (Twition)
 
 A modern, comprehensive Next.js-based API service that automates Twitter posting by extracting completed tasks from Notion, processing them with Google's Gemini AI, and posting to Twitter on-demand. Features a sleek web dashboard, enhanced error handling, and robust service architecture.
 
