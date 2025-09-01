@@ -46,12 +46,12 @@ const guaranteedEmailNotification = async (errorMessage: string, errorStack: str
       logger.info('Error notification email sent successfully', { attempt, context });
       return;
     } catch (emailError) {
-      logger.error(`Failed to send error notification email (attempt ${attempt}/${retries})`, { 
+      logger.error(`Failed to send error notification email (attempt ${attempt}/${retries})`, {
         error: emailError instanceof Error ? emailError.message : 'Unknown error',
         originalError: errorMessage,
         attempt
       });
-      
+
       if (attempt === retries) {
         logger.error('All email notification attempts failed - using alternative notification methods', {
           originalError: errorMessage,
@@ -74,7 +74,7 @@ const fallbackNotification = async (errorMessage: string, errorStack: string, co
       timestamp: new Date().toISOString(),
       fallbackUsed: true
     });
-    
+
     const fallbackEmail = process.env.FALLBACK_EMAIL || process.env.ERROR_NOTIFICATION_EMAIL;
     if (fallbackEmail && fallbackEmail !== process.env.ERROR_NOTIFICATION_EMAIL) {
       const nodemailer = await import('nodemailer');
@@ -85,7 +85,7 @@ const fallbackNotification = async (errorMessage: string, errorStack: string, co
           pass: process.env.EMAIL_PASSWORD,
         },
       });
-      
+
       await basicTransporter.sendMail({
         from: process.env.EMAIL_USER,
         to: fallbackEmail,
@@ -102,7 +102,7 @@ Time: ${new Date().toISOString()}
 
 This message was sent using fallback email system because primary email notifications failed.`
       });
-      
+
       logger.info('Fallback email notification sent successfully');
     }
   } catch (fallbackError) {

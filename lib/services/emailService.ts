@@ -52,14 +52,19 @@ export const sendErrorNotification = async (
             <p><strong>Severity:</strong> HIGH</p>
           </div>
 
-          <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #dc3545; margin: 20px 0; border-radius: 5px;">
-            <h3 style="margin-top: 0; color: #dc3545;">Error Message:</h3>
-            <p style="background-color: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 3px; font-family: monospace; color: #dc3545; font-weight: bold;">${errorMessage}</p>
+          <div style="background-color: #fff; padding: 20px; border: 3px solid #dc3545; margin: 20px 0; border-radius: 8px; box-shadow: 0 4px 6px rgba(220, 53, 69, 0.1);">
+            <h3 style="margin-top: 0; color: #dc3545; text-align: center; font-size: 18px;">🔥 MAIN ERROR MESSAGE</h3>
+            <div style="background: linear-gradient(135deg, #ffe6e9, #fff5f5); padding: 15px; border-radius: 6px; border: 2px solid #dc3545;">
+              <p style="font-family: monospace; color: #721c24; font-weight: bold; font-size: 16px; margin: 0; text-align: center; word-break: break-word;">${errorMessage}</p>
+            </div>
           </div>
 
           <div style="background-color: #f1f3f4; padding: 15px; border-radius: 5px; margin: 20px 0;">
-            <h4 style="margin-top: 0;">Stack Trace:</h4>
-            <pre style="background-color: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 3px; overflow-x: auto; font-size: 12px; max-height: 200px; overflow-y: auto;">${errorStack}</pre>
+            <h4 style="margin-top: 0; color: #495057;">📋 Complete Stack Trace & Logs:</h4>
+            <div style="background-color: #fff; padding: 15px; border: 1px solid #ddd; border-radius: 4px;">
+              <h5 style="margin-top: 0; color: #6c757d; font-size: 14px;">Stack Trace:</h5>
+              <pre style="background-color: #f8f9fa; padding: 10px; border: 1px solid #e9ecef; border-radius: 3px; overflow-x: auto; font-size: 12px; max-height: 200px; overflow-y: auto; margin: 0;">${errorStack}</pre>
+            </div>
           </div>
 
           <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0; border-radius: 5px;">

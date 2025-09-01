@@ -1,14 +1,14 @@
-# Twitter Automation API
+# Twition - Twitter Automation API
 
-A modern, comprehensive Next.js-based API service that automates Twitter posting by extracting completed tasks from Notion, processing them with Google's Gemini AI, and posting to Twitter on-demand. Features a sleek web dashboard, enhanced error handling, and robust service architecture.
+A modern Next.js-based API service that automates Twitter posting by analyzing Notion pages for completed tasks, processing them with Google's Gemini AI, and posting to Twitter on-demand. Features a sleek web dashboard, intelligent content analysis, and robust error handling.
 
 ## 🚀 Features
 
 - **Modern Web Dashboard**: Beautiful, responsive UI built with Next.js 15, React 19, and Tailwind CSS 4
-- **Notion Integration**: Automatically extracts completed tasks from your Notion database with smart page detection
+- **Intelligent Page Analysis**: Analyzes Notion pages to determine completion status and task states
 - **AI-Powered Content Generation**: Uses Google's Gemini AI to create engaging Twitter content
 - **Smart Content Processing**: Automatically determines whether to create single tweets or threads based on content length
-- **One-Click Automation**: Trigger complete workflow via Notion buttons, dashboard, or API calls
+- **One-Click Automation**: Trigger complete workflow via web dashboard or API calls
 - **Enhanced Error Handling**: Comprehensive error tracking with stage-based monitoring and notifications
 - **Email Notifications**: Sends detailed success and error notifications via email
 - **Comprehensive Logging**: Winston-based structured logging with error handling
@@ -114,32 +114,32 @@ curl https://twition.shubhojeet.com/api/automate
 curl https://twition.shubhojeet.com/api/status?detailed=true
 ```
 
-## 🏗 Modern Architecture
+## 🏗 Architecture
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Next.js 15    │───▶│  Service Layer   │───▶│  External APIs  │
-│   App Router    │    │  with Enhanced   │    │   (Twitter,     │
-│   + React 19    │    │  Error Handling  │    │   Notion, AI)   │
+│   App Router    │    │  (TypeScript)    │    │   (Twitter,     │
+│   + React 19    │    │                  │    │   Notion, AI)   │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
          │                       │                        │
          ▼                       ▼                        ▼
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │  Interactive    │    │   Utilities      │    │   Enhanced      │
-│  Dashboard +    │    │ & Processors +   │    │   Logging &     │
-│  API Docs       │    │  Validation      │    │   Monitoring    │
+│  Dashboard +    │    │ & Processors     │    │   Logging &     │
+│  API Docs       │    │                  │    │   Monitoring    │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
-### Enhanced Service Layer
+### Service Layer (`lib/services/`)
 
-- **NotionService**: Extracts completed tasks with smart page detection and automatic fallback
+- **NotionService**: Analyzes Notion pages to determine completion status and extract completed tasks
 - **GeminiService**: Generates Twitter-optimized content using Google's Gemini AI
 - **TwitterService**: Posts content to Twitter with enhanced error handling (single tweets or threads)
 - **EmailService**: Sends detailed notifications and alerts with formatting
-- **SchedulerService**: Manages timing, timezone handling, and system status
+- **SchedulerService**: Manages timing and system status
 
-### Enhanced Utility Layer
+### Utility Layer (`lib/utils/`)
 
 - **Logger**: Winston-based structured logging with error/info separation
 - **ErrorHandler**: Centralized error handling with stage tracking and notifications
@@ -147,32 +147,29 @@ curl https://twition.shubhojeet.com/api/status?detailed=true
 - **Validation**: Environment variable and configuration validation
 - **Startup**: System initialization and health monitoring
 
-## 🔗 Notion Button Integration
+## 🔗 Usage
 
-The easiest way to trigger the automation is by creating a button in your Notion page.
+### Web Dashboard
 
-### Setting up the Notion Button
+Visit your deployment URL to access the interactive dashboard where you can:
+- Enter your Notion page ID
+- Trigger automation with one click
+- View real-time progress updates
+- Monitor results and responses
 
-1. **Create a Button in Notion**:
-   - In your Notion page, type `/button`
-   - Name it something like "Post to Twitter" or "Share Daily Updates"
+### API Usage
 
-2. **Configure the Button**:
-   - **URL**: `https://twition.shubhojeet.com/api/automate`
-   - **Method**: POST
-   - **Headers**: `Content-Type: application/json` (optional)
+Make a POST request to `/api/automate` with your Notion page ID:
 
-3. **Test the Button**:
-   - Click the button to trigger the automation
-   - Check your email for success/error notifications
-   - Verify the post appears on Twitter
+```bash
+# Trigger automation for a specific page
+curl -X POST "https://twition.shubhojeet.com/api/automate?pageId=your-notion-page-id"
 
-### Alternative Trigger Methods
-
-1. **Manual Dashboard**: Visit your app's dashboard and click the "🐦 Post to Twitter Now" button
-2. **API Call**: Make a POST request to `/api/automate`
-3. **Mobile Shortcut**: Add the endpoint URL to your phone's shortcuts app
-4. **Webhook**: Set up external services (Zapier, IFTTT) to call your endpoint
+# Or include in request body
+curl -X POST "https://twition.shubhojeet.com/api/automate" \
+  -H "Content-Type: application/json" \
+  -d '{"pageId": "your-notion-page-id"}'
+```
 
 ## 📊 Enhanced Monitoring & Logging
 
@@ -200,14 +197,24 @@ curl https://your-domain.com/api/automate
 curl https://your-domain.com/api/status?detailed=true
 ```
 
-## 🔧 Notion Database Setup
+## 🔧 How It Works
 
-Your Notion database should have the following properties:
+### Page Analysis Logic
 
-- **Name/Title** (Title): Task title
-- **Status** (Checkbox): Completion status (✅ for completed)
-- **Date** (Date): Task date
-- **Content** (Rich Text): Task details (optional)
+The system analyzes your Notion page to determine if Twitter content should be generated:
+
+1. **Page Status Check**: Analyzes todo items and completion status
+2. **Content Extraction**: Extracts completed tasks and their details  
+3. **Smart Decision Making**: Determines if the page is "done" based on task completion ratios
+4. **Content Generation**: Only generates tweets when the page status indicates completion
+
+### Notion Page Requirements
+
+Your Notion page should contain todo items with checkboxes. The system will:
+- Extract all todo items from the page
+- Identify completed vs incomplete tasks
+- Analyze completion ratios to determine page status
+- Generate Twitter content only when appropriate conditions are met
 
 ## 🚀 Deployment
 
@@ -257,10 +264,7 @@ pnpm lint
 ### API Testing
 
 ```bash
-# Test complete automation
-curl -X POST https://your-domain.com/api/automate
-
-# Test with specific Notion page
+# Test automation with specific Notion page
 curl -X POST "https://your-domain.com/api/automate?pageId=your-page-id"
 
 # Check system health
@@ -280,17 +284,42 @@ curl https://your-domain.com/api/automate
 - **Input Validation**: Comprehensive validation for all inputs and configurations
 - **Defensive Design**: Built with defensive security measures, no malicious use support
 
-## 🤝 Contributing
+## 📁 Project Structure
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-This project is licensed under the MIT License.
+```
+automate-twitter/
+├── app/                          # Next.js App Router
+│   ├── api/
+│   │   ├── automate/
+│   │   │   └── route.ts         # Main automation endpoint
+│   │   └── status/
+│   │       └── route.ts         # Health check endpoint
+│   ├── docs/
+│   │   └── page.tsx             # API documentation page
+│   ├── globals.css              # Global styles
+│   ├── layout.tsx               # Root layout
+│   └── page.tsx                 # Dashboard page
+├── components/                   # Reusable UI components
+│   ├── ui/                      # shadcn/ui components
+│   └── mode-toggle.tsx          # Theme toggle
+├── lib/                         # Core application logic
+│   ├── services/                # External service integrations
+│   │   ├── notionService.ts     # Notion API integration
+│   │   ├── geminiService.ts     # Google AI integration
+│   │   ├── twitterService.ts    # Twitter API integration
+│   │   ├── emailService.ts      # Email notifications
+│   │   └── schedulerService.ts  # Timing utilities
+│   ├── utils/                   # Utility functions
+│   │   ├── logger.ts            # Winston logging
+│   │   ├── errorHandler.ts      # Error management
+│   │   ├── contentProcessor.ts  # Content analysis
+│   │   ├── validation.ts        # Environment validation
+│   │   └── startup.ts           # System initialization
+│   └── types/
+│       └── index.ts             # TypeScript definitions
+├── logs/                        # Application logs
+└── README.md                    # This file
+```
 
 ## 🆘 Support & Troubleshooting
 
