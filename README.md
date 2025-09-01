@@ -64,7 +64,7 @@ Before setting up the service, ensure you have:
    EMAIL_SERVICE=gmail
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASSWORD=your_app_password_here
-   ERROR_NOTIFICATION_EMAIL=shubhobera98@gmail.com
+   ERROR_NOTIFICATION_EMAIL=shubhobera98@gmail.com (change with yours primary email)
 
    # Application Configuration
    TIMEZONE=Asia/Kolkata
