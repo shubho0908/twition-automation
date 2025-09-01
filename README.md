@@ -49,7 +49,6 @@ Before setting up the service, ensure you have:
    ```env
    # Notion Configuration
    NOTION_API_KEY=your_notion_api_key_here
-   NOTION_PAGE_ID=your_notion_database_id_here
 
    # Twitter API Configuration  
    TWITTER_API_KEY=your_twitter_api_key_here
