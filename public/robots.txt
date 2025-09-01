@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /api/automate
+Allow: /api/status
+
+Disallow: /api/
+Disallow: /_next/
+Disallow: /logs/
+Disallow: /.env*
+
+Sitemap: /sitemap.xml
