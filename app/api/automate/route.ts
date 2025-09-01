@@ -75,9 +75,14 @@ export async function POST(request: Request) {
     }
 
     currentStage = 'notion-data-fetch';
-    logger.info('📚 Fetching completed tasks from Notion', { pageId: pageId || 'default' });
     
-    const tasks: NotionTask[] = await getTodaysCompletedTasks(pageId || undefined);
+    if (!pageId) {
+      throw new Error('No Notion page ID provided. Please provide pageId as a query parameter, in the request body, or ensure the request comes from a Notion context with proper headers.');
+    }
+    
+    logger.info('📚 Fetching completed tasks from Notion', { pageId });
+    
+    const tasks: NotionTask[] = await getTodaysCompletedTasks(pageId);
     
     if (tasks.length === 0) {
       logger.info('✅ Workflow completed - No tasks to share today');

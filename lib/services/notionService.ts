@@ -7,26 +7,15 @@ const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 });
 
-export const getTodaysCompletedTasks = async (pageId?: string): Promise<NotionTask[]> => {
+export const getTodaysCompletedTasks = async (pageId: string): Promise<NotionTask[]> => {
   try {
-    let targetPageId = pageId;
-    
-    if (!targetPageId) {
-      logger.info('No pageId provided, attempting to find today\'s page automatically');
-      const foundPageId = await findTodaysPage();
-      if (foundPageId) {
-        targetPageId = foundPageId;
-      }
+    if (!pageId) {
+      throw new Error('Page ID is required. Please provide a valid Notion page ID.');
     }
     
-    if (!targetPageId) {
-      targetPageId = process.env.NOTION_PAGE_ID!;
-      logger.info('Using fallback page ID from environment');
-    }
+    logger.info('Fetching completed tasks from Notion page', { pageId });
     
-    logger.info('Fetching completed tasks from Notion page', { pageId: targetPageId });
-    
-    const tasks = await extractCompletedTodosFromPage(targetPageId);
+    const tasks = await extractCompletedTodosFromPage(pageId);
     
     logger.info(`Found ${tasks.length} completed tasks`);
     return tasks;
@@ -37,44 +26,6 @@ export const getTodaysCompletedTasks = async (pageId?: string): Promise<NotionTa
   }
 };
 
-const findTodaysPage = async (): Promise<string | null> => {
-  try {
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    
-    logger.info('Searching for today\'s page', { date: todayStr });
-    
-    const response = await notion.databases.query({
-      database_id: process.env.NOTION_PAGE_ID!,
-      filter: {
-        property: 'Date',
-        date: {
-          equals: todayStr
-        }
-      },
-      sorts: [
-        {
-          property: 'Date',
-          direction: 'descending'
-        }
-      ],
-      page_size: 1
-    });
-
-    if (response.results.length > 0 && 'id' in response.results[0]) {
-      const foundPageId = response.results[0].id;
-      logger.info('Found today\'s page automatically', { pageId: foundPageId });
-      return foundPageId;
-    }
-
-    logger.info('No page found for today\'s date');
-    return null;
-
-  } catch (error) {
-    logger.error('Error searching for today\'s page', { error });
-    return null;
-  }
-};
 
 const extractCompletedTodosFromPage = async (pageId: string): Promise<NotionTask[]> => {
   try {

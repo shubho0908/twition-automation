@@ -3,7 +3,6 @@ import logger from './logger';
 export const validateEnvironmentVariables = (): boolean => {
   const required = [
     'NOTION_API_KEY',
-    'NOTION_PAGE_ID', 
     'TWITTER_API_KEY',
     'TWITTER_API_SECRET',
     'TWITTER_ACCESS_TOKEN',
